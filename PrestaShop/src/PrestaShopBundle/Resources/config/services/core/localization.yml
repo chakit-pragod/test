@@ -1,0 +1,42 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+
+  PrestaShop\PrestaShop\Core\Localization\Pack\Factory\LocalizationPackFactoryInterface: '@PrestaShop\PrestaShop\Core\Localization\Pack\Factory\LocalizationPackFactory'
+  PrestaShop\PrestaShop\Core\Localization\Pack\Factory\LocalizationPackFactory:
+  PrestaShop\PrestaShop\Core\Localization\Pack\Import\LocalizationPackImporter:
+    arguments:
+      $remoteLocalizationPackLoader: '@PrestaShop\PrestaShop\Core\Localization\Pack\Loader\RemoteLocalizationPackLoader'
+      $localLocalizationPackLoader: '@PrestaShop\PrestaShop\Core\Localization\Pack\Loader\LocalLocalizationPackLoader'
+
+  PrestaShop\PrestaShop\Core\Localization\Pack\Loader\LocalLocalizationPackLoader:
+  PrestaShop\PrestaShop\Core\Localization\Pack\Loader\RemoteLocalizationPackLoader:
+  PrestaShop\PrestaShop\Core\Localization\RTL\StyleSheetProcessorFactory:
+  PrestaShop\PrestaShop\Core\Localization\Number\LocaleNumberTransformer:
+
+  # Deprecated since 9.0
+  prestashop.core.localozation.pack.factory.localization_pack:
+    class: 'PrestaShop\PrestaShop\Core\Localization\Pack\Factory\LocalizationPackFactory'
+    deprecated: ~
+    public: true
+
+  prestashop.core.localization.pack.loader.local:
+    alias: 'PrestaShop\PrestaShop\Core\Localization\Pack\Loader\LocalLocalizationPackLoader'
+    deprecated: ~
+    public: true
+
+  prestashop.core.localization.pack.loader.remote:
+    alias: 'PrestaShop\PrestaShop\Core\Localization\Pack\Loader\RemoteLocalizationPackLoader'
+    deprecated: ~
+    public: true
+
+  prestashop.core.localization.rtl.processor_factory:
+    class: 'PrestaShop\PrestaShop\Core\Localization\RTL\StyleSheetProcessorFactory'
+    deprecated: ~
+    public: true
+
+  prestashop.core.localization.pack.import.importer:
+    public: true
+    alias: 'PrestaShop\PrestaShop\Core\Localization\Pack\Import\LocalizationPackImporter'
+    deprecated: ~

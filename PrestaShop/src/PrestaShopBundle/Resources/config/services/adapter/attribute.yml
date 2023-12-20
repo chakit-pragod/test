@@ -1,0 +1,14 @@
+services:
+  _defaults:
+    public: true
+
+  PrestaShop\PrestaShop\Adapter\Attribute\CommandHandler\DeleteAttributeHandler:
+    autoconfigure: true
+
+  PrestaShop\PrestaShop\Adapter\Attribute\CommandHandler\BulkDeleteAttributeHandler:
+    autoconfigure: true
+
+  PrestaShop\PrestaShop\Adapter\Attribute\Repository\AttributeRepository:
+    arguments:
+      - '@doctrine.dbal.default_connection'
+      - '%database_prefix%'

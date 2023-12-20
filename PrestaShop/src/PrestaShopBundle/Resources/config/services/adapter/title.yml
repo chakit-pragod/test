@@ -1,0 +1,37 @@
+services:
+  _defaults:
+    public: true
+
+  PrestaShop\PrestaShop\Adapter\Title\CommandHandler\AddTitleHandler:
+    autowire: true
+    autoconfigure: true
+
+  PrestaShop\PrestaShop\Adapter\Title\CommandHandler\EditTitleHandler:
+    autowire: true
+    autoconfigure: true
+
+  prestashop.adapter.title.title_image_thumbnail_provider:
+    class: 'PrestaShop\PrestaShop\Adapter\Title\TitleImageThumbnailProvider'
+    arguments:
+      - '@prestashop.core.image.parser.image_tag_source_parser'
+      - '@PrestaShop\PrestaShop\Adapter\ImageManager'
+      - !php/const _PS_GENDERS_DIR_
+
+  prestashop.adapter.title.command_handler.delete_title_handler:
+    class: 'PrestaShop\PrestaShop\Adapter\Title\CommandHandler\DeleteTitleHandler'
+    autowire: true
+    autoconfigure: true
+
+  prestashop.adapter.title.command_handler.bulk_delete_title_handler:
+    class: 'PrestaShop\PrestaShop\Adapter\Title\CommandHandler\BulkDeleteTitleHandler'
+    autowire: true
+    autoconfigure: true
+
+  PrestaShop\PrestaShop\Adapter\Title\QueryHandler\GetTitleForEditingHandler:
+    autowire: true
+    autoconfigure: true
+
+  PrestaShop\PrestaShop\Adapter\Title\Repository\TitleRepository:
+    autowire: true
+
+  PrestaShop\PrestaShop\Adapter\Title\Validate\TitleValidator: ~

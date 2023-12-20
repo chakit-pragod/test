@@ -1,0 +1,40 @@
+services:
+  _defaults:
+    public: true
+
+  prestashop.adapter.meta.meta_eraser:
+    class: 'PrestaShop\PrestaShop\Adapter\Meta\MetaEraser'
+
+  prestashop.adapter.meta.data_provider:
+    class: 'PrestaShop\PrestaShop\Adapter\Meta\MetaDataProvider'
+
+  # COMMAND HANDLERS
+
+  prestashop.adapter.meta.command_handler.save_meta:
+    class: 'PrestaShop\PrestaShop\Adapter\Meta\CommandHandler\AddMetaHandler'
+    autoconfigure: true
+    arguments:
+      - '@prestashop.core.hook.dispatcher'
+      - '@validator'
+      - '@=service("prestashop.adapter.legacy.configuration").get("PS_LANG_DEFAULT")'
+      - '@prestashop.adapter.meta.data_provider'
+
+  prestashop.adapter.meta.command_handler.edit_meta:
+    class: 'PrestaShop\PrestaShop\Adapter\Meta\CommandHandler\EditMetaHandler'
+    autoconfigure: true
+    arguments:
+      - '@validator'
+      - '@prestashop.adapter.meta.data_provider'
+
+  # QUERY HANDLERS
+
+  prestashop.adapter.meta.query_handler.get_meta_for_editing:
+    class: 'PrestaShop\PrestaShop\Adapter\Meta\QueryHandler\GetMetaForEditingHandler'
+    autoconfigure: true
+
+
+  prestashop.adapter.meta.query_handler.get_pages_for_layout_customization_handler:
+    class: 'PrestaShop\PrestaShop\Adapter\Meta\QueryHandler\GetPagesForLayoutCustomizationHandler'
+    autoconfigure: true
+    arguments:
+      - '@=service("prestashop.adapter.legacy.context").getContext().language.id'

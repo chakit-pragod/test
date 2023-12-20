@@ -1,0 +1,27 @@
+services:
+  _defaults:
+    public: true
+
+  prestashop.adapter.contact.repository:
+    class: 'PrestaShop\PrestaShop\Adapter\Support\ContactRepository'
+
+  prestashop.adapter.contact.deleter:
+    class: 'PrestaShop\PrestaShop\Adapter\Support\ContactDeleter'
+
+  prestashop.adapter.contact.query_handler.get_contact_for_editing:
+    class: 'PrestaShop\PrestaShop\Adapter\Contact\QueryHandler\GetContactForEditingHandler'
+    autoconfigure: true
+    arguments:
+      - '@PrestaShopBundle\Form\DataTransformer\StringArrayToIntegerArrayDataTransformer'
+
+  prestashop.adapter.contact.command_handler.edit_contact:
+    class: 'PrestaShop\PrestaShop\Adapter\Contact\CommandHandler\EditContactHandler'
+    autoconfigure: true
+    arguments:
+      - '@validator'
+
+  prestashop.adapter.contact.command_handler.add_contact:
+    class: 'PrestaShop\PrestaShop\Adapter\Contact\CommandHandler\AddContactHandler'
+    autoconfigure: true
+    arguments:
+      - '@validator'

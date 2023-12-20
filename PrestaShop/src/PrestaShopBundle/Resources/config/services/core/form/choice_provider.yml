@@ -1,0 +1,137 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+    bind:
+      $langId: '@=service("prestashop.adapter.legacy.context").getLanguage().id'
+      $themeCollection: '@=service("prestashop.core.addon.theme.repository").getListAsCollection()'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\:
+    resource: '../../../Core/Form/ChoiceProvider/*'
+
+  # Todo, place this service into the correct place, one day
+  PrestaShop\PrestaShop\Adapter\Form\ChoiceProvider\ZoneByIdChoiceProvider: ~
+
+  # Todo: migrate controllers to use DI and make this private.
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\CurrencyByIdChoiceProvider:
+    public: true
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\LanguageChoiceProvider:
+    arguments:
+      $languages: '@=service("prestashop.adapter.data_provider.language").getLanguages(false)'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\ProductTypeChoiceProvider:
+    arguments:
+      $combinationFeature: '@PrestaShop\PrestaShop\Adapter\Feature\CombinationFeature'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\TimezoneByNameChoiceProvider:
+    arguments:
+      - '@prestashop.core.admin.timezone.repository'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\LocalizationPackByIsoCodeChoiceProvider:
+    arguments:
+      $remoteLocalizationPackLoader: '@PrestaShop\PrestaShop\Core\Localization\Pack\Loader\RemoteLocalizationPackLoader'
+      $localLocalizationPackLoader: '@PrestaShop\PrestaShop\Core\Localization\Pack\Loader\LocalLocalizationPackLoader'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\NonInstalledLocalizationChoiceProvider:
+    arguments:
+      - '@=service("prestashop.core.language.pack.loader.remote").getLanguagePackList()'
+      - '@prestashop.adapter.language.validator'
+      - '@prestashop.adapter.data_provider.language'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\GroupByIdChoiceProvider:
+    arguments:
+      - '@prestashop.adapter.data_provider.group'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\CarrierByReferenceChoiceProvider:
+    arguments:
+      - '@prestashop.adapter.data_provider.carrier'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\OrderStateByIdChoiceProvider:
+    arguments:
+      $orderStateDataProvider: '@prestashop.adapter.data_provider.order_state'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\InvoiceModelByNameChoiceProvider:
+    arguments:
+      - '@prestashop.core.file.cached_finder.invoice_model'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\MailMethodChoiceProvider:
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\ContactByIdChoiceProvider:
+    arguments:
+      - '@prestashop.adapter.contact.repository'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\ModuleByNameChoiceProvider:
+    arguments:
+      - '@=service("PrestaShop\\PrestaShop\\Core\\Module\\ModuleRepository").getInstalledModules()'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\ImportMatchConfigurationChoiceProvider:
+    arguments:
+      - '@=service("prestashop.core.admin.import_match.repository").findAll()'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\ImportEntityFieldChoiceProvider:
+    arguments:
+      - '@=service("prestashop.core.import.fields_provider_finder")'
+      - '@=service("session").get("entity")'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\ThemePageLayoutsChoiceProvider:
+    arguments:
+      - '@=service("prestashop.adapter.legacy.context").getContext().shop.theme'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\ThemeChoiceProvider:
+    arguments:
+      - '@prestashop.core.addon.theme.theme_provider'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\CurrencyNameByIsoCodeChoiceProvider:
+    arguments:
+      - '@=service("prestashop.core.localization.cldr.locale_repository").getLocale(service("prestashop.adapter.legacy.context").getContext().language.getLocale()).getAllCurrencies()'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\DefaultMetaPageNameChoiceProvider:
+    arguments:
+      - '@request_stack'
+      - '@prestashop.adapter.meta.data_provider'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\ModuleMetaPageNameChoiceProvider:
+    arguments:
+      - '@request_stack'
+      - '@prestashop.adapter.meta.data_provider'
+
+  PrestaShop\PrestaShop\Adapter\Form\ChoiceProvider\TaxRuleGroupChoiceProvider:
+    arguments:
+      - '@=service("prestashop.adapter.legacy.context").getContext().country.id'
+      - '@PrestaShop\PrestaShop\Adapter\TaxRulesGroup\Repository\TaxRulesGroupRepository'
+      - '@PrestaShop\PrestaShop\Adapter\Tax\TaxComputer'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\CmsCategoriesChoiceProvider:
+    arguments:
+      - '@=service("prestashop.adapter.cms_page.categories_provider").getAllNestedCategories()'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\TabChoiceProvider:
+    arguments:
+      - '@=service("PrestaShop\\PrestaShop\\Adapter\\Tab\\TabDataProvider").getViewableTabsForContextEmployee(service("prestashop.adapter.legacy.context").getLanguage().id)'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\ProfileChoiceProvider:
+    arguments:
+      - '@=service("prestashop.adapter.data_provider.profile").getProfiles(service("prestashop.adapter.legacy.context").getLanguage().id)'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\MailThemeChoiceProvider:
+    arguments:
+      - '@prestashop.core.mail_template.theme_catalog'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\CustomerAddressesChoiceProvider:
+    arguments:
+      - '@prestashop.adapter.data_provider.customer'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\CustomerServiceOrderMessagesNameChoiceProvider:
+    arguments:
+      - '@=service("prestashop.adapter.order_message.order_message_provider").getMessages()'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\CustomerServiceOrderMessagesChoiceProvider:
+    arguments:
+      - '@prestashop.adapter.order_message.order_message_provider'
+
+  PrestaShop\PrestaShop\Core\Form\ChoiceProvider\ProductImagesChoiceProvider:
+    arguments:
+      - '@prestashop.core.command_bus'
+      - '@=service("prestashop.adapter.legacy.configuration").getInt("PS_SHOP_DEFAULT")'
+      - "@=service('prestashop.adapter.shop.context').getContextShopID()"

@@ -1,0 +1,5 @@
+api_stock_list_categories:
+  path: /
+  methods: [ GET ]
+  defaults:
+    _controller: PrestaShopBundle\Controller\Api\CategoryController::listCategoriesAction

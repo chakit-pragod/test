@@ -1,0 +1,38 @@
+services:
+  _defaults:
+    public: true
+
+  PrestaShop\PrestaShop\Adapter\Product\VirtualProduct\CommandHandler\AddVirtualProductFileHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\VirtualProduct\Update\VirtualProductUpdater'
+
+  PrestaShop\PrestaShop\Adapter\Product\VirtualProduct\CommandHandler\UpdateVirtualProductFileHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\VirtualProduct\Update\VirtualProductUpdater'
+      - '@PrestaShop\PrestaShop\Adapter\Product\VirtualProduct\Repository\VirtualProductFileRepository'
+
+  PrestaShop\PrestaShop\Adapter\Product\VirtualProduct\Update\VirtualProductUpdater:
+    autowire: true
+    public: false
+
+  PrestaShop\PrestaShop\Adapter\Product\VirtualProduct\Validate\VirtualProductFileValidator: ~
+
+  PrestaShop\PrestaShop\Adapter\Product\VirtualProduct\Repository\VirtualProductFileRepository:
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\VirtualProduct\Validate\VirtualProductFileValidator'
+
+  PrestaShop\PrestaShop\Adapter\File\Validator\VirtualProductFileValidator:
+    arguments:
+      - '@=service("prestashop.adapter.legacy.configuration").get("PS_ATTACHMENT_MAXIMUM_SIZE")'
+
+  PrestaShop\PrestaShop\Adapter\File\Uploader\VirtualProductFileUploader:
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\File\Validator\VirtualProductFileValidator'
+      - !php/const _PS_DOWNLOAD_DIR_
+
+  PrestaShop\PrestaShop\Adapter\Product\VirtualProduct\CommandHandler\DeleteVirtualProductFileHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\VirtualProduct\Update\VirtualProductUpdater'

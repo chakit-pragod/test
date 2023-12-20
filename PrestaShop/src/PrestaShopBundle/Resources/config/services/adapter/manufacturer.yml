@@ -1,0 +1,53 @@
+services:
+  _defaults:
+    public: true
+
+  # Command handlers
+
+  prestashop.adapter.manufacturer.manufacturer_logo_thumbnail_provider:
+    class: 'PrestaShop\PrestaShop\Adapter\Manufacturer\ManufacturerLogoThumbnailProvider'
+    arguments:
+      - '@prestashop.core.image.parser.image_tag_source_parser'
+
+  prestashop.adapter.manufacturer.command_handler.toggle_manufacturer_status_handler:
+    class: 'PrestaShop\PrestaShop\Adapter\Manufacturer\CommandHandler\ToggleManufacturerStatusHandler'
+    autoconfigure: true
+
+  prestashop.adapter.manufacturer.command_handler.bulk_toggle_manufacturer_status_handler:
+    class: 'PrestaShop\PrestaShop\Adapter\Manufacturer\CommandHandler\BulkToggleManufacturerStatusHandler'
+    autoconfigure: true
+
+  prestashop.adapter.manufacturer.command_handler.delete_manufacturer_handler:
+    class: 'PrestaShop\PrestaShop\Adapter\Manufacturer\CommandHandler\DeleteManufacturerHandler'
+    autoconfigure: true
+
+  prestashop.adapter.manufacturer.command_handler.delete_manufacturer_logo_image_handler:
+    class: 'PrestaShop\PrestaShop\Adapter\Manufacturer\CommandHandler\DeleteManufacturerLogoImageHandler'
+    autoconfigure: true
+    arguments:
+      - !php/const _PS_MANU_IMG_DIR_
+      - !php/const _PS_TMP_IMG_DIR_
+
+  prestashop.adapter.manufacturer.command_handler.bulk_delete_manufacturer_handler:
+    class: 'PrestaShop\PrestaShop\Adapter\Manufacturer\CommandHandler\BulkDeleteManufacturerHandler'
+    autoconfigure: true
+
+  prestashop.adapter.manufacturer.query_handler.get_manufacturer_for_editing:
+    class: 'PrestaShop\PrestaShop\Adapter\Manufacturer\QueryHandler\GetManufacturerForEditingHandler'
+    autoconfigure: true
+    arguments:
+      - '@prestashop.core.image.parser.image_tag_source_parser'
+
+  prestashop.adapter.manufacturer.command_handler.edit_manufacturer_handler:
+    class: 'PrestaShop\PrestaShop\Adapter\Manufacturer\CommandHandler\EditManufacturerHandler'
+    autoconfigure: true
+
+  prestashop.adapter.manufacturer.command_handler.add_manufacturer_handler:
+    class: 'PrestaShop\PrestaShop\Adapter\Manufacturer\CommandHandler\AddManufacturerHandler'
+    autoconfigure: true
+
+  prestashop.adapter.manufacturer.query_handler.get_manufacturer_for_viewing_handler:
+    class: 'PrestaShop\PrestaShop\Adapter\Manufacturer\QueryHandler\GetManufacturerForViewingHandler'
+    autoconfigure: true
+
+  PrestaShop\PrestaShop\Adapter\Manufacturer\Repository\ManufacturerRepository: ~

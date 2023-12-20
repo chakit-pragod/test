@@ -1,0 +1,30 @@
+services:
+  _defaults:
+    public: true
+
+  PrestaShop\PrestaShop\Adapter\Product\Pack\Repository\ProductPackRepository:
+    arguments:
+      - '@doctrine.dbal.default_connection'
+      - '%database_prefix%'
+
+  PrestaShop\PrestaShop\Adapter\Product\Pack\Update\ProductPackUpdater:
+    autowire: true
+    public: false
+
+  PrestaShop\PrestaShop\Adapter\Product\Pack\CommandHandler\SetPackProductsHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\Pack\Update\ProductPackUpdater'
+
+  PrestaShop\PrestaShop\Adapter\Product\Pack\CommandHandler\RemoveAllProductsFromPackHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\Pack\Update\ProductPackUpdater'
+
+  PrestaShop\PrestaShop\Adapter\Product\Pack\QueryHandler\GetPackedProductsHandler:
+    autowire: true
+    public: false
+    autoconfigure: true
+    arguments:
+      $defaultLangId: '@=service("prestashop.adapter.legacy.context").getContext().language.id'
+      $translator: '@translator'

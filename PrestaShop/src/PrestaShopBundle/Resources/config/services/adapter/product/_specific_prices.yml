@@ -1,0 +1,60 @@
+services:
+  _defaults:
+    public: true
+
+  PrestaShop\PrestaShop\Adapter\Product\SpecificPrice\QueryHandler\GetSpecificPriceListHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\SpecificPrice\Repository\SpecificPriceRepository'
+      - '@PrestaShop\PrestaShop\Adapter\Attribute\Repository\AttributeRepository'
+      - '@PrestaShop\PrestaShop\Core\Product\Combination\NameBuilder\CombinationNameBuilderInterface'
+
+  PrestaShop\PrestaShop\Adapter\Product\SpecificPrice\QueryHandler\GetSpecificPriceForEditingHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\SpecificPrice\Repository\SpecificPriceRepository'
+      - '@PrestaShop\PrestaShop\Adapter\Customer\Repository\CustomerRepository'
+
+  PrestaShop\PrestaShop\Adapter\Product\SpecificPrice\CommandHandler\AddSpecificPriceHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\SpecificPrice\Repository\SpecificPriceRepository'
+
+  PrestaShop\PrestaShop\Adapter\Product\SpecificPrice\CommandHandler\EditSpecificPriceHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\SpecificPrice\Repository\SpecificPriceRepository'
+
+  PrestaShop\PrestaShop\Adapter\Product\SpecificPrice\CommandHandler\DeleteSpecificPriceHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\SpecificPrice\Repository\SpecificPriceRepository'
+
+  PrestaShop\PrestaShop\Adapter\Product\SpecificPrice\CommandHandler\SetSpecificPricePriorityForProductHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\SpecificPrice\Update\SpecificPricePriorityUpdater'
+
+  PrestaShop\PrestaShop\Adapter\Product\SpecificPrice\CommandHandler\RemoveSpecificPricePriorityForProductHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\SpecificPrice\Update\SpecificPricePriorityUpdater'
+
+  PrestaShop\PrestaShop\Adapter\Product\SpecificPrice\Update\SpecificPricePriorityUpdater:
+    public: true
+    arguments:
+      - '@doctrine.dbal.default_connection'
+      - '%database_prefix%'
+      - '@PrestaShop\PrestaShop\Core\ConfigurationInterface'
+
+  PrestaShop\PrestaShop\Adapter\Product\SpecificPrice\Validate\SpecificPriceValidator:
+    autowire: true
+    public: false
+
+  PrestaShop\PrestaShop\Adapter\Product\SpecificPrice\Repository\SpecificPriceRepository:
+    public: true
+    arguments:
+      - '@doctrine.dbal.default_connection'
+      - '%database_prefix%'
+      - '@PrestaShop\PrestaShop\Adapter\Product\SpecificPrice\Validate\SpecificPriceValidator'
+      - '@PrestaShop\PrestaShop\Core\ConfigurationInterface'

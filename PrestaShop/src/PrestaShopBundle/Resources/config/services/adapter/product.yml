@@ -1,0 +1,312 @@
+imports:
+  - { resource: product/*.yml }
+
+services:
+  _defaults:
+    public: true
+
+  PrestaShop\PrestaShop\Adapter\Product\CommandHandler\AssignProductToCategoryHandler:
+    autowire: true
+    autoconfigure: true
+
+  PrestaShop\PrestaShop\Adapter\Product\QueryHandler\SearchProductsHandler:
+    autoconfigure: true
+    arguments:
+      - '@=service("PrestaShop\\PrestaShop\\Adapter\\LegacyContext").getContext().language.id'
+      - '@PrestaShop\PrestaShop\Core\Localization\LocaleInterface'
+      - '@PrestaShop\PrestaShop\Adapter\Tools'
+      - '@PrestaShop\PrestaShop\Core\Currency\CurrencyDataProviderInterface'
+      - '@PrestaShop\PrestaShop\Adapter\ContextStateManager'
+
+  PrestaShop\PrestaShop\Adapter\Product\QueryHandler\SearchProductsForAssociationHandler:
+    autowire: true
+    public: false
+    autoconfigure: true
+
+  PrestaShop\PrestaShop\Adapter\Product\QueryHandler\GetProductIsEnabledHandler:
+    autoconfigure: true
+
+  PrestaShop\PrestaShop\Adapter\Product\Grid\Data\Factory\ProductGridDataFactoryDecorator:
+    arguments:
+      - '@prestashop.core.grid.data.factory.product'
+      - '@PrestaShop\PrestaShop\Core\Localization\Locale\Repository'
+      - '@=service("PrestaShop\\PrestaShop\\Adapter\\LegacyContext").getContext().language.getLocale()'
+      - '@=service("PrestaShop\\PrestaShop\\Adapter\\Configuration").get("PS_CURRENCY_DEFAULT")'
+      - '@PrestaShop\PrestaShop\Adapter\Tax\TaxComputer'
+      - '@=service("PrestaShop\\PrestaShop\\Adapter\\LegacyContext").getContext().country.id'
+      - '@PrestaShop\PrestaShop\Adapter\Product\Image\ProductImagePathFactory'
+      - '@translator'
+      - '@=service("PrestaShop\\PrestaShop\\Adapter\\Configuration").getBoolean("PS_TAX")'
+      - '@=service("PrestaShop\\PrestaShop\\Adapter\\Configuration").getBoolean("PS_USE_ECOTAX")'
+      - '@=service("PrestaShop\\PrestaShop\\Adapter\\Configuration").getInt("PS_ECOTAX_TAX_RULES_GROUP_ID")'
+      - '@PrestaShop\PrestaShop\Adapter\Shop\Repository\ShopRepository'
+      - '@PrestaShop\PrestaShop\Adapter\Product\Repository\ProductRepository'
+
+  PrestaShop\PrestaShop\Adapter\Product\Grid\Data\Factory\ProductShopsGridDataFactoryDecorator:
+    parent: PrestaShop\PrestaShop\Adapter\Product\Grid\Data\Factory\ProductGridDataFactoryDecorator
+    arguments:
+      $productGridDataFactory: '@prestashop.core.grid.data.factory.product.shops'
+    public: false
+
+  PrestaShop\PrestaShop\Adapter\Product\Grid\Data\Factory\ProductLightGridDataFactoryDecorator:
+    arguments:
+      - '@prestashop.core.grid.data.factory.product'
+      - '@PrestaShop\PrestaShop\Core\Localization\Locale\Repository'
+      - '@=service("PrestaShop\\PrestaShop\\Adapter\\LegacyContext").getContext().language.getLocale()'
+      - '@=service("PrestaShop\\PrestaShop\\Adapter\\Configuration").get("PS_CURRENCY_DEFAULT")'
+      - '@=service("PrestaShop\\PrestaShop\\Adapter\\Configuration").get("PS_STOCK_MANAGEMENT")'
+
+  PrestaShop\PrestaShop\Adapter\Product\QueryHandler\GetProductForEditingHandler:
+    autowire: true
+    public: false
+    autoconfigure: true
+    arguments:
+      $countryId: '@=service("PrestaShop\\PrestaShop\\Adapter\\Configuration").getInt("PS_COUNTRY_DEFAULT")'
+
+  PrestaShop\PrestaShop\Adapter\Product\CommandHandler\AddProductHandler:
+    autowire: true
+    public: false
+    autoconfigure: true
+
+  PrestaShop\PrestaShop\Adapter\Product\CommandHandler\SetProductTagsHandler:
+    autowire: true
+    public: false
+    autoconfigure: true
+
+  PrestaShop\PrestaShop\Adapter\Product\CommandHandler\UpdateProductsPositionsHandler:
+    autoconfigure: true
+    arguments:
+      - '@prestashop.core.grid.product.position_definition'
+      - '@PrestaShop\PrestaShop\Core\Grid\Position\PositionUpdateFactoryInterface'
+      - '@PrestaShop\PrestaShop\Core\Grid\Position\GridPositionUpdaterInterface'
+
+  PrestaShop\PrestaShop\Adapter\Product\CommandHandler\RemoveAllProductTagsHandler:
+    autowire: true
+    public: false
+    autoconfigure: true
+
+  PrestaShop\PrestaShop\Adapter\Product\CommandHandler\SetAssociatedProductCategoriesHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\Update\ProductCategoryUpdater'
+
+  PrestaShop\PrestaShop\Adapter\Product\CommandHandler\RemoveAllAssociatedProductCategoriesHandler:
+    autowire: true
+    autoconfigure: true
+
+  PrestaShop\PrestaShop\Adapter\Product\CommandHandler\SetCarriersHandler:
+    autowire: true
+    public: false
+    autoconfigure: true
+
+  PrestaShop\PrestaShop\Adapter\Product\QueryHandler\GetProductSupplierOptionsHandler:
+    autowire: true
+    public: false
+    autoconfigure: true
+
+  PrestaShop\PrestaShop\Adapter\Product\Supplier\QueryHandler\GetAssociatedSuppliersHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\Repository\ProductSupplierRepository'
+
+  PrestaShop\PrestaShop\Adapter\Product\Supplier\CommandHandler\SetSuppliersHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\Update\ProductSupplierUpdater'
+
+  PrestaShop\PrestaShop\Adapter\Product\Supplier\CommandHandler\SetProductDefaultSupplierHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\Update\ProductSupplierUpdater'
+
+  PrestaShop\PrestaShop\Adapter\Product\Supplier\CommandHandler\UpdateProductSuppliersHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\Update\ProductSupplierUpdater'
+      - '@PrestaShop\PrestaShop\Adapter\Product\Repository\ProductSupplierRepository'
+
+  PrestaShop\PrestaShop\Adapter\Product\Supplier\CommandHandler\RemoveAllAssociatedProductSuppliersHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\Update\ProductSupplierUpdater'
+
+  PrestaShop\PrestaShop\Adapter\Product\Update\ProductAttachmentUpdater:
+    autowire: true
+    public: false
+
+  PrestaShop\PrestaShop\Adapter\Product\Validate\ProductValidator:
+    autowire: true
+    public: false
+
+  PrestaShop\PrestaShop\Adapter\Product\Repository\ProductRepository:
+    autowire: true
+    arguments:
+      - '@doctrine.dbal.default_connection'
+      - '%database_prefix%'
+
+  PrestaShop\PrestaShop\Adapter\Product\Update\ProductTypeUpdater:
+    autowire: true
+    public: false
+
+  PrestaShop\PrestaShop\Adapter\Product\CommandHandler\DeleteProductHandler:
+    autowire: true
+    public: false
+    autoconfigure: true
+
+  PrestaShop\PrestaShop\Adapter\Product\CommandHandler\BulkDeleteProductHandler:
+    autowire: true
+    public: false
+    autoconfigure: true
+
+  PrestaShop\PrestaShop\Adapter\Product\CommandHandler\BulkDuplicateProductHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\Update\ProductDuplicator'
+
+  PrestaShop\PrestaShop\Adapter\Product\CommandHandler\BulkUpdateProductStatusHandler:
+    autowire: true
+    autoconfigure: true
+
+  PrestaShop\PrestaShop\Adapter\Product\Attachment\CommandHandler\SetAssociatedProductAttachmentsHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\Update\ProductAttachmentUpdater'
+
+  PrestaShop\PrestaShop\Adapter\Product\Attachment\CommandHandler\RemoveAllAssociatedProductAttachmentsHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\Update\ProductAttachmentUpdater'
+
+  PrestaShop\PrestaShop\Adapter\Product\Validate\ProductSupplierValidator:
+    autowire: true
+    public: false
+
+  PrestaShop\PrestaShop\Adapter\Product\Repository\ProductSupplierRepository:
+    arguments:
+      - '@doctrine.dbal.default_connection'
+      - '%database_prefix%'
+      - '@PrestaShop\PrestaShop\Adapter\Product\Validate\ProductSupplierValidator'
+
+  PrestaShop\PrestaShop\Adapter\Product\Update\ProductSupplierUpdater:
+    autowire: true
+    public: false
+    arguments:
+      $defaultCurrencyId: '@=service("PrestaShop\\PrestaShop\\Adapter\\Configuration").get("PS_CURRENCY_DEFAULT")'
+
+  PrestaShop\PrestaShop\Adapter\Product\Update\RelatedProductsUpdater:
+    autowire: true
+    public: false
+
+  PrestaShop\PrestaShop\Adapter\Product\CommandHandler\SetRelatedProductsHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\Update\RelatedProductsUpdater'
+
+  PrestaShop\PrestaShop\Adapter\Product\QueryHandler\GetRelatedProductsHandler:
+    autowire: true
+    public: false
+    autoconfigure: true
+
+  PrestaShop\PrestaShop\Adapter\Product\CommandHandler\RemoveAllRelatedProductsHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\Update\RelatedProductsUpdater'
+
+  PrestaShop\PrestaShop\Adapter\Product\Repository\TagRepository:
+    arguments:
+      - '@doctrine.dbal.default_connection'
+      - '%database_prefix%'
+
+  PrestaShop\PrestaShop\Adapter\Product\Update\ProductTagUpdater:
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\Repository\TagRepository'
+      - '@PrestaShop\PrestaShop\Adapter\Product\Update\ProductIndexationUpdater'
+
+  PrestaShop\PrestaShop\Adapter\Product\Update\ProductCategoryUpdater:
+    autowire: true
+    public: false
+
+  PrestaShop\PrestaShop\Adapter\Product\CommandHandler\DuplicateProductHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\Update\ProductDuplicator'
+
+  PrestaShop\PrestaShop\Adapter\Product\Update\ProductDuplicator:
+    autowire: true
+    arguments:
+      $connection: '@doctrine.dbal.default_connection'
+      $dbPrefix: '%database_prefix%'
+      $productImageSystemPathFactory: '@prestashop.adapter.product.image.product_image_filesystem_path_factory'
+
+  PrestaShop\PrestaShop\Adapter\Product\CommandHandler\UpdateProductTypeHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\Update\ProductTypeUpdater'
+
+  PrestaShop\PrestaShop\Adapter\Product\Update\ProductIndexationUpdater:
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\ContextStateManager'
+      - '@=service("PrestaShop\\PrestaShop\\Adapter\\Configuration").getBoolean("PS_SEARCH_INDEXATION")'
+
+  PrestaShop\PrestaShop\Adapter\Product\Repository\ProductPreviewRepository:
+    autowire: true
+    public: false
+
+  PrestaShop\PrestaShop\Adapter\Product\Update\ProductShopUpdater:
+    autowire: true
+    public: false
+
+  PrestaShop\PrestaShop\Adapter\Product\Shop\CommandHandler\SetProductShopsHandler:
+    autowire: true
+    public: false
+    autoconfigure: true
+
+  PrestaShop\PrestaShop\Adapter\Product\CommandHandler\UpdateProductHandler:
+    autowire: true
+    public: false
+    autoconfigure: true
+    arguments:
+      $productUpdatablePropertyFiller: '@PrestaShop\PrestaShop\Adapter\Product\Update\Filler\ProductFiller'
+
+  PrestaShop\PrestaShop\Adapter\Product\Stock\CommandHandler\UpdateProductStockAvailableHandler:
+    autowire: true
+    public: false
+    autoconfigure: true
+
+  PrestaShop\PrestaShop\Adapter\Product\Update\Filler\ProductFiller:
+    arguments:
+      - !tagged core.product_filler
+
+  PrestaShop\PrestaShop\Adapter\Product\Update\Filler\BasicInformationFiller:
+    arguments:
+      - '@=service("PrestaShop\\PrestaShop\\Adapter\\Configuration").get("PS_LANG_DEFAULT")'
+    tags:
+      # its important that BasicInformationFiller is prioritized before the SeoFiller, because of link_rewrite overriding
+      - { name: 'core.product_filler', priority: 10 }
+
+  PrestaShop\PrestaShop\Adapter\Product\Update\Filler\OptionsFiller:
+    tags: [ 'core.product_filler' ]
+
+  PrestaShop\PrestaShop\Adapter\Product\Update\Filler\PricesFiller:
+    tags: [ 'core.product_filler' ]
+    arguments:
+      - '@PrestaShop\PrestaShop\Core\Util\Number\NumberExtractor'
+      - '@PrestaShop\PrestaShop\Adapter\Configuration'
+
+  PrestaShop\PrestaShop\Adapter\Product\Update\Filler\SeoFiller:
+    tags: [ 'core.product_filler' ]
+    autowire: true
+    public: false
+
+  PrestaShop\PrestaShop\Adapter\Product\Update\Filler\DetailsFiller:
+    tags: [ 'core.product_filler' ]
+
+  PrestaShop\PrestaShop\Adapter\Product\Update\Filler\ShippingFiller:
+    tags: [ 'core.product_filler' ]
+
+  PrestaShop\PrestaShop\Adapter\Product\Update\Filler\StockInformationFiller:
+    tags: [ 'core.product_filler' ]
+
+  PrestaShop\PrestaShop\Adapter\Product\ProductDeleter:
+    autowire: true
+    public: false

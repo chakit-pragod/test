@@ -1,0 +1,18 @@
+.colorpicker {
+  padding: 0;
+  border: none;
+
+  &::before,
+  &::after {
+    border: none;
+  }
+
+  .form-control {
+    &,
+    &:focus-visible,
+    &:focus {
+      color: transparent;
+      text-shadow: none;
+    }
+  }
+}

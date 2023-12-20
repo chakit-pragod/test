@@ -1,0 +1,24 @@
+services:
+  _defaults:
+    public: true
+
+  PrestaShop\PrestaShop\Adapter\Product\FeatureValue\CommandHandler\SetProductFeatureValuesHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\FeatureValue\Update\ProductFeatureValueUpdater'
+
+  PrestaShop\PrestaShop\Adapter\Product\FeatureValue\CommandHandler\RemoveAllFeatureValuesFromProductHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\FeatureValue\Update\ProductFeatureValueUpdater'
+
+  PrestaShop\PrestaShop\Adapter\Product\FeatureValue\QueryHandler\GetProductFeatureValuesHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Feature\Repository\FeatureValueRepository'
+
+  PrestaShop\PrestaShop\Adapter\Product\FeatureValue\Update\ProductFeatureValueUpdater:
+    autowire: true
+    arguments:
+      $connection: '@doctrine.dbal.default_connection'
+      $dbPrefix: '%database_prefix%'

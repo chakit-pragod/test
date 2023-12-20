@@ -1,0 +1,10 @@
+table#order_states_grid_table,
+table#order_return_states_grid_table {
+  tbody {
+    .color-type.column-name {
+      .badge {
+        font-size: inherit;
+      }
+    }
+  }
+}

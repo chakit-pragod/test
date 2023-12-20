@@ -1,0 +1,45 @@
+services:
+  _defaults:
+    public: true
+
+  prestashop.adapter.country.query_handler.get_country_required_fields:
+    class: 'PrestaShop\PrestaShop\Adapter\Country\QueryHandler\GetCountryRequiredFieldsHandler'
+    autoconfigure: true
+    arguments:
+      - '@prestashop.adapter.country.country_required_fields_provider'
+
+  prestashop.adapter.country.country_zip_code_requirements_provider:
+    class: 'PrestaShop\PrestaShop\Adapter\Country\CountryZipCodeRequirementsProvider'
+    arguments:
+      - '@prestashop.adapter.legacy.context'
+      - '@PrestaShop\PrestaShop\Core\Domain\Country\ZipCodePatternResolverInterface'
+
+  prestashop.adapter.country.country_required_fields_provider:
+    class: 'PrestaShop\PrestaShop\Adapter\Country\CountryRequiredFieldsProvider'
+    arguments:
+      - '@prestashop.adapter.data_provider.country'
+
+  PrestaShop\PrestaShop\Adapter\Country\Repository\CountryRepository:
+    autowire: true
+
+  PrestaShop\PrestaShop\Adapter\Country\CommandHandler\AddCountryHandler:
+    public: true
+    autowire: true
+    autoconfigure: true
+
+  PrestaShop\PrestaShop\Adapter\Country\CommandHandler\DeleteCountryHandler:
+    public: false
+    autowire: true
+    autoconfigure: true
+
+  PrestaShop\PrestaShop\Adapter\Country\CommandHandler\EditCountryHandler:
+    public: false
+    autowire: true
+    autoconfigure: true
+
+  PrestaShop\PrestaShop\Adapter\Country\QueryHandler\GetCountryForEditingHandler:
+    public: false
+    autowire: true
+    autoconfigure: true
+
+  PrestaShop\PrestaShop\Adapter\Country\Validate\CountryValidator:

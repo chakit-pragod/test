@@ -1,0 +1,31 @@
+services:
+  _defaults:
+    public: true
+
+  prestashop.adapter.state.command_handler.create_state_handler:
+    class: 'PrestaShop\PrestaShop\Adapter\State\CommandHandler\AddStateHandler'
+    autoconfigure: true
+
+  prestashop.adapter.state.command_handler.edit_state_handler:
+    class: 'PrestaShop\PrestaShop\Adapter\State\CommandHandler\EditStateHandler'
+    autoconfigure: true
+
+  prestashop.adapter.state.command_handler.toggle_state_status_handler:
+    class: 'PrestaShop\PrestaShop\Adapter\State\CommandHandler\ToggleStateStatusHandler'
+    autoconfigure: true
+
+  prestashop.adapter.state.query_handler.get_state_for_editing_handler:
+    class: 'PrestaShop\PrestaShop\Adapter\State\QueryHandler\GetStateForEditingHandler'
+    autoconfigure: true
+
+  prestashop.adapter.state.command_handler.delete_state_handler:
+    class: 'PrestaShop\PrestaShop\Adapter\State\CommandHandler\DeleteStateHandler'
+    autoconfigure: true
+
+  prestashop.adapter.state.command_handler.bulk_delete_state_handler:
+    class: 'PrestaShop\PrestaShop\Adapter\State\CommandHandler\BulkDeleteStateHandler'
+    autoconfigure: true
+
+  prestashop.adapter.state.command_handler.bulk_toggle_state_status_handler:
+    class: 'PrestaShop\PrestaShop\Adapter\State\CommandHandler\BulkToggleStateStatusHandler'
+    autoconfigure: true

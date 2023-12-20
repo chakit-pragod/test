@@ -1,0 +1,65 @@
+// stylelint-disable-next-line
+$component-name: delta-quantity;
+
+.#{$component-name} {
+  display: flex;
+  flex-direction: row;
+
+  &-quantity {
+    min-width: 40px;
+    font-weight: $font-weight-semibold;
+
+    @media screen and (min-width: 768px) {
+      min-width: 120px;
+    }
+
+    .quantity-update {
+      color: $brand-primary;
+      visibility: hidden;
+
+      .material-icons {
+        vertical-align: middle;
+      }
+
+      &.quantity-modified {
+        visibility: visible;
+      }
+    }
+  }
+
+  &-delta-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &-delta {
+    min-width: 60px;
+  }
+
+  span {
+    margin: 0;
+    line-height: 39px;
+  }
+
+  label {
+    min-width: 150px;
+
+    @media screen and (min-width: 768px) {
+      min-width: 240px;
+    }
+
+    margin: 0 0.3125rem;
+    overflow: hidden;
+    line-height: 39px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .modify-all-shops {
+    text-align: right;
+
+    label {
+      line-height: normal;
+    }
+  }
+}

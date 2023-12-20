@@ -1,0 +1,25 @@
+services:
+  _defaults:
+    public: true
+
+  # Command Handlers
+  prestashop.adapter.search_engine.command_handler.add_search_engine_handler:
+    class: PrestaShop\PrestaShop\Adapter\SearchEngine\CommandHandler\AddSearchEngineHandler
+    autoconfigure: true
+
+  prestashop.adapter.search_engine.command_handler.bulk_delete_search_engine_handler:
+    class: PrestaShop\PrestaShop\Adapter\SearchEngine\CommandHandler\BulkDeleteSearchEngineHandler
+    autoconfigure: true
+
+  prestashop.adapter.search_engine.command_handler.delete_search_engine_handler:
+    class: PrestaShop\PrestaShop\Adapter\SearchEngine\CommandHandler\DeleteSearchEngineHandler
+    autoconfigure: true
+
+  prestashop.adapter.search_engine.command_handler.edit_search_engine_handler:
+    class: PrestaShop\PrestaShop\Adapter\SearchEngine\CommandHandler\EditSearchEngineHandler
+    autoconfigure: true
+
+  # Query Handlers
+  prestashop.adapter.search_engine.query_handler.get_search_engine_for_editing_handler:
+    class: PrestaShop\PrestaShop\Adapter\SearchEngine\QueryHandler\GetSearchEngineForEditingHandler
+    autoconfigure: true

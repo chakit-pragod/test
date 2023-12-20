@@ -1,0 +1,48 @@
+services:
+  _defaults:
+    public: true
+
+  prestashop.adapter.sql_manager.sql_query_validator:
+    class: 'PrestaShop\PrestaShop\Adapter\SqlManager\SqlQueryValidator'
+
+  # Command handlers
+  prestashop.adapter.sql_manager.command_handler.add_request_sql:
+    class: 'PrestaShop\PrestaShop\Adapter\SqlManager\CommandHandler\AddSqlRequestHandler'
+    autoconfigure: true
+    arguments:
+      - '@prestashop.adapter.sql_manager.sql_query_validator'
+      - '@translator'
+
+  prestashop.adapter.sql_manager.command_handler.edit_request_sql:
+    class: 'PrestaShop\PrestaShop\Adapter\SqlManager\CommandHandler\EditSqlRequestHandler'
+    autoconfigure: true
+    arguments:
+      - '@prestashop.adapter.sql_manager.sql_query_validator'
+      - '@translator'
+
+  prestashop.adapter.sql_manager.command_handler.delete_request_sql:
+    class: 'PrestaShop\PrestaShop\Adapter\SqlManager\CommandHandler\DeleteSqlRequestHandler'
+    autoconfigure: true
+
+  prestashop.adapter.sql_manager.command_handler.bulk_delete_request_sql:
+    class: 'PrestaShop\PrestaShop\Adapter\SqlManager\CommandHandler\BulkDeleteSqlRequestHandler'
+    autoconfigure: true
+
+  # Query handlers
+  prestashop.adapter.sql_manager.query_handler.get_request_sql_for_editing:
+    class: 'PrestaShop\PrestaShop\Adapter\SqlManager\QueryHandler\GetSqlRequestForEditingHandler'
+    autoconfigure: true
+
+  prestashop.adapter.sql_manager.query_handler.get_request_sql_execution_result:
+    class: 'PrestaShop\PrestaShop\Adapter\SqlManager\QueryHandler\GetSqlRequestExecutionResultHandler'
+    autoconfigure: true
+
+  prestashop.adapter.sql_manager.query_handler.get_database_tables_list:
+    class: 'PrestaShop\PrestaShop\Adapter\SqlManager\QueryHandler\GetDatabaseTablesListHandler'
+    autoconfigure: true
+    arguments:
+      - '@prestashop.adapter.legacy.configuration'
+
+  prestashop.adapter.sql_manager.query_handler.get_database_table_fields_list:
+    class: 'PrestaShop\PrestaShop\Adapter\SqlManager\QueryHandler\GetDatabaseTableFieldsListHandler'
+    autoconfigure: true

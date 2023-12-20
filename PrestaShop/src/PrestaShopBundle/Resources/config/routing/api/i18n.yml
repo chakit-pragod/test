@@ -1,0 +1,7 @@
+api_i18n_translations_list:
+  path: /{page}
+  methods: [ GET ]
+  defaults:
+    _controller: PrestaShopBundle\Controller\Api\I18nController::listTranslationAction
+  requirements:
+    page: \w+

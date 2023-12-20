@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "module": "commonjs",
+    "target": "es5",
+    "strict": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "downlevelIteration": true,
+    "baseUrl": "./",
+    "paths": {
+      "@pages/*": ["pages/*"],
+      "@commonTests/*": ["commonTests/*"],
+      "@data/*": ["data/*"],
+      "@utils/*": ["utils/*"],
+      "@tools/*": ["tools/*"],
+      "@webservices/*": ["webservices/*"]
+    },
+    "typeRoots": ["types", "node_modules/@types"],
+    "skipLibCheck": true,
+    "noEmit": true
+  },
+}

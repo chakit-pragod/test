@@ -1,0 +1,31 @@
+services:
+  _defaults:
+    public: true
+
+  prestashop.core.command_bus:
+    alias: PrestaShop\PrestaShop\Core\CommandBus\CommandBusInterface
+
+  PrestaShop\PrestaShop\Core\CommandBus\CommandBusInterface:
+    class: PrestaShopBundle\CommandBus\MessengerCommandBus
+    autowire: true
+    public: false
+
+  prestashop.core.query_bus:
+    parent: 'prestashop.core.command_bus'
+    public: true
+
+  prestashop.core.provider.command_definition_provider:
+    class: 'PrestaShop\PrestaShop\Core\CommandBus\Parser\CommandDefinitionParser'
+
+  PrestaShopBundle\CommandBus\Middleware\CommandRegisterMiddleware:
+    autowire: true
+    public: false
+    arguments:
+      - '@messenger.bus.default.messenger.handlers_locator'
+
+  PrestaShop\PrestaShop\Core\CommandBus\ExecutedCommandRegistry:
+    arguments:
+      - '@prestashop.core.command_bus.parser.command_type_parser'
+
+  prestashop.core.command_bus.parser.command_type_parser:
+    class: PrestaShop\PrestaShop\Core\CommandBus\Parser\CommandTypeParser

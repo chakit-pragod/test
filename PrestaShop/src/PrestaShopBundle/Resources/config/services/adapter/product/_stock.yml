@@ -1,0 +1,39 @@
+services:
+  _defaults:
+    public: true
+
+  PrestaShop\PrestaShop\Adapter\Product\Stock\Validate\StockAvailableValidator: ~
+
+  PrestaShop\PrestaShop\Adapter\Product\Stock\Repository\StockAvailableRepository:
+    autowire: true
+    public: false
+    arguments:
+      - '@doctrine.dbal.default_connection'
+      - '%database_prefix%'
+
+  PrestaShop\PrestaShop\Adapter\Product\Stock\Repository\StockMovementRepository:
+    arguments:
+      - '@doctrine.dbal.default_connection'
+      - '%database_prefix%'
+
+  PrestaShop\PrestaShop\Adapter\Product\Stock\Repository\MovementReasonRepository:
+    arguments:
+      - '@PrestaShop\PrestaShop\Core\ConfigurationInterface'
+
+  PrestaShop\PrestaShop\Adapter\Product\Stock\QueryHandler\GetProductStockMovementsHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\Stock\Repository\StockAvailableRepository'
+      - '@PrestaShop\PrestaShop\Adapter\Product\Stock\Repository\StockMovementRepository'
+      - '@translator'
+
+  PrestaShop\PrestaShop\Adapter\Product\Stock\QueryHandler\GetCombinationStockMovementsHandler:
+    autoconfigure: true
+    arguments:
+      - '@PrestaShop\PrestaShop\Adapter\Product\Stock\Repository\StockAvailableRepository'
+      - '@PrestaShop\PrestaShop\Adapter\Product\Stock\Repository\StockMovementRepository'
+      - '@translator'
+
+  PrestaShop\PrestaShop\Adapter\Product\Stock\Update\ProductStockUpdater:
+    autowire: true
+    public: false
